@@ -1,7 +1,13 @@
 package acme
 
 import (
+	"encoding/base64"
+	"github.com/xenolf/lego/acme"
+	"github.com/xenolf/lego/providers/dns/route53"
+	"net/http"
+	"net/http/httptest"
 	"reflect"
+	"strings"
 	"sync"
 	"testing"
 )
@@ -254,5 +260,91 @@ bZME3gHPYCk1QFZUptriMCJ5fMjCgxeOTR+FAkstb/lTRuCc4UyILJguIMar
 	}
 	if !reflect.DeepEqual(domainsCertificates.Certs[0].Certificate, newCertificate) {
 		t.Errorf("Expected new certificate %+v \nGot %+v", newCertificate, domainsCertificates.Certs[0].Certificate)
+	}
+}
+
+func TestSelectDNSProvider(t *testing.T) {
+	provider, err := dnsChallengeProvider("route53")
+	if err != nil {
+		t.Errorf("Error in dnsChallengeProvider :%v", err)
+	}
+	if reflect.TypeOf(provider) != reflect.TypeOf(&route53.DNSProvider{}) {
+		t.Errorf("Not loaded correct DNS proviver: %v is not *route53.DNSProvider", reflect.TypeOf(provider))
+	}
+}
+
+func TestUnknownDNSProvider(t *testing.T) {
+	badProvider := "i-dont-exist"
+	provider, err := dnsChallengeProvider(badProvider)
+	if provider != nil {
+		t.Errorf("Have a provider %T when none expected!", provider)
+	}
+	if err == nil {
+		t.Errorf("Missing expected error from dnsChallengeProvider!")
+	} else if !strings.Contains(err.Error(), badProvider) {
+		t.Errorf("Not mentioning badProvider %s in error message!", badProvider)
+	}
+}
+
+func TestNoPreCheckOverride(t *testing.T) {
+	acme.PreCheckDNS = nil // Irreversable - but not expecting real calls into this during testing process
+	err := dnsOverrideDelay(0)
+	if err != nil {
+		t.Errorf("Error in dnsOverrideDelay :%v", err)
+	}
+	if acme.PreCheckDNS != nil {
+		t.Errorf("Unexpected change to acme.PreCheckDNS when leaving DNS verification as is.")
+	}
+}
+
+func TestSillyPreCheckOverride(t *testing.T) {
+	err := dnsOverrideDelay(-5)
+	if err == nil {
+		t.Errorf("Missing expected error in dnsOverrideDelay!")
+	}
+}
+
+func TestPreCheckOverride(t *testing.T) {
+	acme.PreCheckDNS = nil // Irreversable - but not expecting real calls into this during testing process
+	err := dnsOverrideDelay(5)
+	if err != nil {
+		t.Errorf("Error in dnsOverrideDelay :%v", err)
+	}
+	if acme.PreCheckDNS == nil {
+		t.Errorf("No change to acme.PreCheckDNS when meant to be adding enforcing override function.")
+	}
+}
+
+func TestAcmeClientCreation(t *testing.T) {
+	acme.PreCheckDNS = nil // Irreversable - but not expecting real calls into this during testing process
+	// Lengthy setup to avoid external web requests - oh for easier golang testing!
+	account := &Account{Email: "f@f"}
+	account.PrivateKey, _ = base64.StdEncoding.DecodeString(`
+MIIBPAIBAAJBAMp2Ni92FfEur+CAvFkgC12LT4l9D53ApbBpDaXaJkzzks+KsLw9zyAxvlrfAyTCQ
+7tDnEnIltAXyQ0uOFUUdcMCAwEAAQJAK1FbipATZcT9cGVa5x7KD7usytftLW14heQUPXYNV80r/3
+lmnpvjL06dffRpwkYeN8DATQF/QOcy3NNNGDw/4QIhAPAKmiZFxA/qmRXsuU8Zhlzf16WrNZ68K64
+asn/h3qZrAiEA1+wFR3WXCPIolOvd7AHjfgcTKQNkoMPywU4FYUNQ1AkCIQDv8yk0qPjckD6HVCPJ
+llJh9MC0svjevGtNlxJoE3lmEQIhAKXy1wfZ32/XtcrnENPvi6lzxI0T94X7s5pP3aCoPPoJAiEAl
+cijFkALeQp/qyeXdFld2v9gUN3eCgljgcl0QweRoIc=---`)
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`{
+"new-authz": "https://foo/acme/new-authz",
+"new-cert": "https://foo/acme/new-cert",
+"new-reg": "https://foo/acme/new-reg",
+"revoke-cert": "https://foo/acme/revoke-cert"
+}`))
+	}))
+	defer ts.Close()
+	a := ACME{DNSProvider: "manual", DelayDontCheckDNS: 10, CAServer: ts.URL}
+
+	client, err := a.buildACMEClient(account)
+	if err != nil {
+		t.Errorf("Error in buildACMEClient: %v", err)
+	}
+	if client == nil {
+		t.Errorf("No client from buildACMEClient!")
+	}
+	if acme.PreCheckDNS == nil {
+		t.Errorf("No change to acme.PreCheckDNS when meant to be adding enforcing override function.")
 	}
 }

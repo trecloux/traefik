@@ -12,6 +12,20 @@ import (
 	"github.com/containous/traefik/safe"
 	"github.com/containous/traefik/types"
 	"github.com/xenolf/lego/acme"
+	"github.com/xenolf/lego/providers/dns/cloudflare"
+	"github.com/xenolf/lego/providers/dns/digitalocean"
+	"github.com/xenolf/lego/providers/dns/dnsimple"
+	"github.com/xenolf/lego/providers/dns/dnsmadeeasy"
+	"github.com/xenolf/lego/providers/dns/dyn"
+	"github.com/xenolf/lego/providers/dns/gandi"
+	// "github.com/xenolf/lego/providers/dns/googlecloud"
+	"github.com/xenolf/lego/providers/dns/linode"
+	"github.com/xenolf/lego/providers/dns/namecheap"
+	"github.com/xenolf/lego/providers/dns/ovh"
+	"github.com/xenolf/lego/providers/dns/pdns"
+	"github.com/xenolf/lego/providers/dns/rfc2136"
+	"github.com/xenolf/lego/providers/dns/route53"
+	"github.com/xenolf/lego/providers/dns/vultr"
 	"golang.org/x/net/context"
 	"io/ioutil"
 	fmtlog "log"
@@ -30,6 +44,9 @@ type ACME struct {
 	OnHostRule          bool     `description:"Enable certificate generation on frontends Host rules."`
 	CAServer            string   `description:"CA server to use."`
 	EntryPoint          string   `description:"Entrypoint to proxy acme challenge to."`
+	DNSProvider         string   `description:"Use a DNS based challenge provider rather than HTTPS."`
+	DelayDontCheckDNS   int      `description:"Assume DNS propagates after a delay in seconds rather than finding and querying nameservers."`
+	ACMELogging         bool     `description:"Enable debug logging of ACME actions."`
 	client              *acme.Client
 	defaultCertificate  *tls.Certificate
 	store               cluster.Store
@@ -79,7 +96,11 @@ type Domain struct {
 }
 
 func (a *ACME) init() error {
-	acme.Logger = fmtlog.New(ioutil.Discard, "", 0)
+	if a.ACMELogging {
+		acme.Logger = fmtlog.New(os.Stderr, "legolog: ", fmtlog.LstdFlags)
+	} else {
+		acme.Logger = fmtlog.New(ioutil.Discard, "", 0)
+	}
 	// no certificates in TLS config, so we add a default one
 	cert, err := generateDefaultCertificate()
 	if err != nil {
@@ -413,6 +434,63 @@ func (a *ACME) renewCertificates() error {
 	return nil
 }
 
+func dnsOverrideDelay(delay int) error {
+	var err error
+	if delay > 0 {
+		log.Debugf("Delaying %d seconds rather than validating DNS propagation", delay)
+		acme.PreCheckDNS = func(_, _ string) (bool, error) {
+			time.Sleep(time.Duration(delay) * time.Second)
+			return true, nil
+		}
+	} else if delay < 0 {
+		err = fmt.Errorf("Invalid negative DelayDontCheckDNS: %d", delay)
+	}
+	return err
+}
+
+func dnsChallengeProvider(dnsProvider string) (acme.ChallengeProvider, error) {
+	var provider acme.ChallengeProvider
+	var err error
+
+	// Names & below borrowed from https://github.com/xenolf/lego/blob/master/cli_handlers.go
+	switch dnsProvider {
+	case "cloudflare":
+		provider, err = cloudflare.NewDNSProvider()
+	case "digitalocean":
+		provider, err = digitalocean.NewDNSProvider()
+	case "dnsimple":
+		provider, err = dnsimple.NewDNSProvider()
+	case "dnsmadeeasy":
+		provider, err = dnsmadeeasy.NewDNSProvider()
+	case "dyn":
+		provider, err = dyn.NewDNSProvider()
+	case "gandi":
+		provider, err = gandi.NewDNSProvider()
+	// If uncommented, build fails owing to referencing an internal package
+	// case "gcloud":
+	// 	provider, err = googlecloud.NewDNSProvider()
+	case "linode":
+		provider, err = linode.NewDNSProvider()
+	case "manual":
+		provider, err = acme.NewDNSProviderManual()
+	case "namecheap":
+		provider, err = namecheap.NewDNSProvider()
+	case "route53":
+		provider, err = route53.NewDNSProvider()
+	case "rfc2136":
+		provider, err = rfc2136.NewDNSProvider()
+	case "vultr":
+		provider, err = vultr.NewDNSProvider()
+	case "ovh":
+		provider, err = ovh.NewDNSProvider()
+	case "pdns":
+		provider, err = pdns.NewDNSProvider()
+	default:
+		err = fmt.Errorf("Unrecognised DNSProvider: %s", dnsProvider)
+	}
+	return provider, err
+}
+
 func (a *ACME) buildACMEClient(account *Account) (*acme.Client, error) {
 	log.Debugf("Building ACME client...")
 	caServer := "https://acme-v01.api.letsencrypt.org/directory"
@@ -423,8 +501,28 @@ func (a *ACME) buildACMEClient(account *Account) (*acme.Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	client.ExcludeChallenges([]acme.Challenge{acme.HTTP01, acme.DNS01})
-	err = client.SetChallengeProvider(acme.TLSSNI01, a.challengeProvider)
+
+	if len(a.DNSProvider) > 0 {
+		log.Debugf("Using DNS Challenge provider: %s", a.DNSProvider)
+
+		err = dnsOverrideDelay(a.DelayDontCheckDNS)
+		if err != nil {
+			return nil, err
+		}
+
+		var provider acme.ChallengeProvider
+		provider, err = dnsChallengeProvider(a.DNSProvider)
+		if err != nil {
+			return nil, err
+		}
+
+		client.ExcludeChallenges([]acme.Challenge{acme.HTTP01, acme.TLSSNI01})
+		err = client.SetChallengeProvider(acme.DNS01, provider)
+	} else {
+		client.ExcludeChallenges([]acme.Challenge{acme.HTTP01, acme.DNS01})
+		err = client.SetChallengeProvider(acme.TLSSNI01, a.challengeProvider)
+	}
+
 	if err != nil {
 		return nil, err
 	}

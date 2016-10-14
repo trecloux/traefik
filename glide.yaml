@@ -61,7 +61,7 @@ import:
   subpackages:
   - plugin/rewrite
 - package: github.com/xenolf/lego
-  version: b2fad6198110326662e9e356a97199078a4a775c
+  version: 96d81ae561ed4e454ba0225d6ea3d27369d9ca55
   subpackages:
   - acme
 - package: golang.org/x/net
@@ -102,3 +102,16 @@ import:
 - package: github.com/docker/leadership
 - package: github.com/satori/go.uuid
   version: ^1.1.0
+- package: github.com/JamesClonk/vultr
+  version: ^1.10.0
+- package: github.com/aws/aws-sdk-go
+  version: ^1.4.22
+  subpackages:
+  - aws
+  - client
+  - request
+  - session
+  - route53
+- package: github.com/ovh/go-ovh
+- package: github.com/timewasted/linode
+- package: github.com/weppos/dnsimple-go
