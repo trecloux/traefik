@@ -17,6 +17,7 @@ import (
 	"github.com/xenolf/lego/providers/dns/dnsimple"
 	"github.com/xenolf/lego/providers/dns/dnsmadeeasy"
 	"github.com/xenolf/lego/providers/dns/dyn"
+	"github.com/xenolf/lego/providers/dns/exoscale"
 	"github.com/xenolf/lego/providers/dns/gandi"
 	// "github.com/xenolf/lego/providers/dns/googlecloud"
 	"github.com/xenolf/lego/providers/dns/linode"
@@ -464,6 +465,8 @@ func dnsChallengeProvider(dnsProvider string) (acme.ChallengeProvider, error) {
 		provider, err = dnsmadeeasy.NewDNSProvider()
 	case "dyn":
 		provider, err = dyn.NewDNSProvider()
+	case "exoscale":
+		provider, err = exoscale.NewDNSProvider()
 	case "gandi":
 		provider, err = gandi.NewDNSProvider()
 	// If uncommented, build fails owing to referencing an internal package

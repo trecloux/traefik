@@ -61,7 +61,9 @@ import:
   subpackages:
   - plugin/rewrite
 - package: github.com/xenolf/lego
-  version: 96d81ae561ed4e454ba0225d6ea3d27369d9ca55
+  repo: https://github.com/trecloux/lego.git
+  vcs: git
+  version: ddcef463e8a7e4e6249ff5741a95c5b9da7c9d22
   subpackages:
   - acme
 - package: golang.org/x/net

@@ -274,6 +274,7 @@ entryPoint = "https"
 #  - digitalocean: DO_AUTH_TOKEN
 #  - dnsimple: DNSIMPLE_EMAIL, DNSIMPLE_API_KEY
 #  - dnsmadeeasy: DNSMADEEASY_API_KEY, DNSMADEEASY_API_SECRET
+#  - exoscale: EXOSCALE_API_KEY, EXOSCALE_API_SECRET
 #  - gandi: GANDI_API_KEY
 #  - linode: LINODE_API_KEY
 #  - manual: none, but run traefik interactively & turn on acmeLogging to see instructions & press Enter

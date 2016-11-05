@@ -1,10 +1,10 @@
-hash: 3b610d592ee53bdbbdea76af3f38bda3691be895d9c9248f42f566d9d6afd074
-updated: 2016-10-30T23:49:30.9276416Z
+hash: a949c2605fe3b0ae00453a7acc0f6564a0579f1b0828cf3e5912713a1edab441
+updated: 2016-11-05T08:28:36.593073221+01:00
 imports:
 - name: github.com/abbot/go-http-auth
   version: cb4372376e1e00e9f6ab9ec142e029302c9e7140
 - name: github.com/aws/aws-sdk-go
-  version: 6c577e9e7b08a6d10bad1c9703227cd0403a8dd7
+  version: 45d21707a58c6bfdf7cf12197d054769d88f7d13
   subpackages:
   - aws
   - aws/awserr
@@ -284,6 +284,10 @@ imports:
   version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
   subpackages:
   - difflib
+- name: github.com/pyr/egoscale
+  version: ab4b0d7ff424c462da486aef27f354cdeb29a319
+  subpackages:
+  - src/egoscale
 - name: github.com/ryanuber/go-glob
   version: 572520ed46dbddaed19ea3d9541bdd0494163693
 - name: github.com/samuel/go-zookeeper
@@ -293,7 +297,7 @@ imports:
 - name: github.com/satori/go.uuid
   version: 879c5887cd475cd7864858769793b2ceb0d44feb
 - name: github.com/Sirupsen/logrus
-  version: f3cfb454f4c209e6668c95216c4744b8fddb2356
+  version: 3ec0642a7fb6488f65b06f9040adc67e3990296a
 - name: github.com/streamrail/concurrent-map
   version: 8bf1e9bacbf65b10c81d0f4314cf2b1ebef728b5
 - name: github.com/stretchr/objx
@@ -349,7 +353,9 @@ imports:
   subpackages:
   - dnsimple
 - name: github.com/xenolf/lego
-  version: 96d81ae561ed4e454ba0225d6ea3d27369d9ca55
+  version: ddcef463e8a7e4e6249ff5741a95c5b9da7c9d22
+  repo: https://github.com/trecloux/lego.git
+  vcs: git
   subpackages:
   - acme
   - providers/dns/cloudflare
@@ -357,6 +363,7 @@ imports:
   - providers/dns/dnsimple
   - providers/dns/dnsmadeeasy
   - providers/dns/dyn
+  - providers/dns/exoscale
   - providers/dns/gandi
   - providers/dns/linode
   - providers/dns/namecheap
