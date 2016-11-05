@@ -406,7 +406,7 @@ func (a *ACME) renewCertificates() error {
 				CertStableURL: certificateResource.Certificate.CertStableURL,
 				PrivateKey:    certificateResource.Certificate.PrivateKey,
 				Certificate:   certificateResource.Certificate.Certificate,
-			}, true)
+			}, true, true)
 			if err != nil {
 				log.Errorf("Error renewing certificate: %v", err)
 				continue
@@ -620,7 +620,7 @@ func (a *ACME) getDomainsCertificates(domains []string) (*Certificate, error) {
 	domains = fun.Map(types.CanonicalDomain, domains).([]string)
 	log.Debugf("Loading ACME certificates %s...", domains)
 	bundle := true
-	certificate, failures := a.client.ObtainCertificate(domains, bundle, nil)
+	certificate, failures := a.client.ObtainCertificate(domains, bundle, nil, true)
 	if len(failures) > 0 {
 		log.Error(failures)
 		return nil, fmt.Errorf("Cannot obtain certificates %s+v", failures)
