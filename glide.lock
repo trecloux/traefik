@@ -1,5 +1,5 @@
-hash: 50b2b91804c22319c7ab98aead0e305c91731a3d2add796a910cde3947117114
-updated: 2016-11-20T12:12:02.5796099Z
+hash: dfc4c937310bf2e5c45d8f43c296340f1cdc99794145259807c1858fb0c04d3c
+updated: 2016-11-21T09:33:06.898998625+01:00
 imports:
 - name: github.com/abbot/go-http-auth
   version: cb4372376e1e00e9f6ab9ec142e029302c9e7140
@@ -283,7 +283,7 @@ imports:
   subpackages:
   - libcontainer/user
 - name: github.com/ovh/go-ovh
-  version: d2b2eae2511fa5fcd0bdef9f1790ea3979fa35d4
+  version: d6763cca4824319e17e556858e4517b151de4558
   subpackages:
   - ovh
 - name: github.com/parnurzeal/gorequest
@@ -292,6 +292,10 @@ imports:
   version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
   subpackages:
   - difflib
+- name: github.com/pyr/egoscale
+  version: ab4b0d7ff424c462da486aef27f354cdeb29a319
+  subpackages:
+  - src/egoscale
 - name: github.com/ryanuber/go-glob
   version: 572520ed46dbddaed19ea3d9541bdd0494163693
 - name: github.com/samuel/go-zookeeper
@@ -301,7 +305,7 @@ imports:
 - name: github.com/satori/go.uuid
   version: 879c5887cd475cd7864858769793b2ceb0d44feb
 - name: github.com/Sirupsen/logrus
-  version: f3cfb454f4c209e6668c95216c4744b8fddb2356
+  version: 3ec0642a7fb6488f65b06f9040adc67e3990296a
 - name: github.com/streamrail/concurrent-map
   version: 8bf1e9bacbf65b10c81d0f4314cf2b1ebef728b5
 - name: github.com/stretchr/objx
@@ -357,7 +361,9 @@ imports:
   subpackages:
   - dnsimple
 - name: github.com/xenolf/lego
-  version: 0abbd738a45af51595a214c52b02b18d16974f19
+  version: ddcef463e8a7e4e6249ff5741a95c5b9da7c9d22
+  repo: https://github.com/trecloux/lego.git
+  vcs: git
   subpackages:
   - acme
   - providers/dns/cloudflare
@@ -365,6 +371,7 @@ imports:
   - providers/dns/dnsimple
   - providers/dns/dnsmadeeasy
   - providers/dns/dyn
+  - providers/dns/exoscale
   - providers/dns/gandi
   - providers/dns/linode
   - providers/dns/namecheap
