@@ -1,5 +1,5 @@
-hash: dfc4c937310bf2e5c45d8f43c296340f1cdc99794145259807c1858fb0c04d3c
-updated: 2016-11-21T09:33:06.898998625+01:00
+hash: d3af98023f97faf07f637e7ffa144620faaed4892656435eccddf7bdd57fd249
+updated: 2016-11-21T09:39:27.091230074+01:00
 imports:
 - name: github.com/abbot/go-http-auth
   version: cb4372376e1e00e9f6ab9ec142e029302c9e7140
@@ -41,6 +41,18 @@ imports:
   - service/route53
   - service/sts
   - session
+- name: github.com/Azure/azure-sdk-for-go
+  version: 3b12823551999669c9a325a32472508e0af7978e
+  subpackages:
+  - arm/dns
+- name: github.com/Azure/go-autorest
+  version: e0c77ecbe74311e03f2a629834d2110f031f1453
+  subpackages:
+  - autorest
+  - autorest/azure
+  - autorest/date
+  - autorest/to
+  - autorest/validation
 - name: github.com/boltdb/bolt
   version: f4c032d907f61f08dba2d719c58f108a1abb8e81
 - name: github.com/BurntSushi/toml
@@ -75,6 +87,8 @@ imports:
   - spew
 - name: github.com/daviddengcn/go-colortext
   version: 3b18c8575a432453d41fdafb340099fff5bba2f7
+- name: github.com/dgrijalva/jwt-go
+  version: 9ed569b5d1ac936e6494082958d63a6aa4fff99a
 - name: github.com/docker/distribution
   version: 99cb7c0946d2f5a38015443e515dc916295064d7
   subpackages:
@@ -192,6 +206,14 @@ imports:
   - store/zookeeper
 - name: github.com/donovanhide/eventsource
   version: fd1de70867126402be23c306e1ce32828455d85b
+- name: github.com/edeckers/auroradnsclient
+  version: 8b777c170cfd377aa16bb4368f093017dddef3f9
+  subpackages:
+  - records
+  - requests
+  - requests/errors
+  - tokens
+  - zones
 - name: github.com/elazarl/go-bindata-assetfs
   version: 9a6736ed45b44bf3835afeebb3034b57ed329f3e
 - name: github.com/gambol99/go-marathon
@@ -206,6 +228,10 @@ imports:
   - proto
 - name: github.com/golang/glog
   version: fca8c8854093a154ff1eb580aae10276ad6b1b5f
+- name: github.com/golang/protobuf
+  version: 8d92cf5fc15a4382f8964b08e1f42a75c0591aa3
+  subpackages:
+  - proto
 - name: github.com/google/go-querystring
   version: 9235644dd9e52eeae6fa48efd539fdc351a0af53
   subpackages:
@@ -361,11 +387,14 @@ imports:
   subpackages:
   - dnsimple
 - name: github.com/xenolf/lego
-  version: ddcef463e8a7e4e6249ff5741a95c5b9da7c9d22
+  version: 5a67269b91714e9bd135a922b7d188ffe88eeddf
   repo: https://github.com/trecloux/lego.git
   vcs: git
   subpackages:
   - acme
+  - providers/dns
+  - providers/dns/auroradns
+  - providers/dns/azure
   - providers/dns/cloudflare
   - providers/dns/digitalocean
   - providers/dns/dnsimple
@@ -373,10 +402,13 @@ imports:
   - providers/dns/dyn
   - providers/dns/exoscale
   - providers/dns/gandi
+  - providers/dns/googlecloud
   - providers/dns/linode
   - providers/dns/namecheap
+  - providers/dns/ns1
   - providers/dns/ovh
   - providers/dns/pdns
+  - providers/dns/rackspace
   - providers/dns/rfc2136
   - providers/dns/route53
   - providers/dns/vultr
@@ -390,13 +422,47 @@ imports:
   version: b400c2eff1badec7022a8c8f5bea058b6315eed7
   subpackages:
   - context
+  - context/ctxhttp
   - proxy
   - publicsuffix
+- name: golang.org/x/oauth2
+  version: 045497edb6234273d67dbc25da3f2ddbc4c4cacf
+  subpackages:
+  - google
+  - internal
+  - jws
+  - jwt
 - name: golang.org/x/sys
   version: 62bee037599929a6e9146f29d10dd5208c43507d
   subpackages:
   - unix
   - windows
+- name: google.golang.org/api
+  version: 9bf6e6e569ff057f75d9604a46c52928f17d2b54
+  subpackages:
+  - dns/v1
+  - gensupport
+  - googleapi
+  - googleapi/internal/uritemplates
+- name: google.golang.org/appengine
+  version: 12d5545dc1cfa6047a286d5e853841b6471f4c19
+  subpackages:
+  - internal
+  - internal/app_identity
+  - internal/base
+  - internal/datastore
+  - internal/log
+  - internal/modules
+  - internal/remote_api
+  - internal/urlfetch
+  - urlfetch
+- name: google.golang.org/cloud
+  version: 975617b05ea8a58727e6c1a06b6161ff4185a9f2
+  subpackages:
+  - compute/metadata
+  - internal
+  - internal/opts
+  - storage
 - name: gopkg.in/fsnotify.v1
   version: 944cff21b3baf3ced9a880365682152ba577d348
 - name: gopkg.in/ini.v1
@@ -405,6 +471,15 @@ imports:
   version: 22287bab4379e1fbf6002fb4eb769888f3fb224c
   subpackages:
   - bson
+- name: gopkg.in/ns1/ns1-go.v2
+  version: d8d10b7f448291ddbdce48d4594fb1b667014c8b
+  subpackages:
+  - rest
+  - rest/model/account
+  - rest/model/data
+  - rest/model/dns
+  - rest/model/filter
+  - rest/model/monitor
 - name: gopkg.in/square/go-jose.v1
   version: aa2e30fdd1fe9dd3394119af66451ae790d50e0d
   subpackages:

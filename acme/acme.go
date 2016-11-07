@@ -13,21 +13,7 @@ import (
 	"github.com/containous/traefik/safe"
 	"github.com/containous/traefik/types"
 	"github.com/xenolf/lego/acme"
-	"github.com/xenolf/lego/providers/dns/cloudflare"
-	"github.com/xenolf/lego/providers/dns/digitalocean"
-	"github.com/xenolf/lego/providers/dns/dnsimple"
-	"github.com/xenolf/lego/providers/dns/dnsmadeeasy"
-	"github.com/xenolf/lego/providers/dns/dyn"
-	"github.com/xenolf/lego/providers/dns/exoscale"
-	"github.com/xenolf/lego/providers/dns/gandi"
-	// "github.com/xenolf/lego/providers/dns/googlecloud"
-	"github.com/xenolf/lego/providers/dns/linode"
-	"github.com/xenolf/lego/providers/dns/namecheap"
-	"github.com/xenolf/lego/providers/dns/ovh"
-	"github.com/xenolf/lego/providers/dns/pdns"
-	"github.com/xenolf/lego/providers/dns/rfc2136"
-	"github.com/xenolf/lego/providers/dns/route53"
-	"github.com/xenolf/lego/providers/dns/vultr"
+	"github.com/xenolf/lego/providers/dns"
 	"io/ioutil"
 	fmtlog "log"
 	"os"
@@ -455,51 +441,6 @@ func dnsOverrideDelay(delay int) error {
 	return err
 }
 
-func dnsChallengeProvider(dnsProvider string) (acme.ChallengeProvider, error) {
-	var provider acme.ChallengeProvider
-	var err error
-
-	// Names & below borrowed from https://github.com/xenolf/lego/blob/master/cli_handlers.go
-	switch dnsProvider {
-	case "cloudflare":
-		provider, err = cloudflare.NewDNSProvider()
-	case "digitalocean":
-		provider, err = digitalocean.NewDNSProvider()
-	case "dnsimple":
-		provider, err = dnsimple.NewDNSProvider()
-	case "dnsmadeeasy":
-		provider, err = dnsmadeeasy.NewDNSProvider()
-	case "dyn":
-		provider, err = dyn.NewDNSProvider()
-	case "exoscale":
-		provider, err = exoscale.NewDNSProvider()
-	case "gandi":
-		provider, err = gandi.NewDNSProvider()
-	// If uncommented, build fails owing to referencing an internal package
-	// case "gcloud":
-	// 	provider, err = googlecloud.NewDNSProvider()
-	case "linode":
-		provider, err = linode.NewDNSProvider()
-	case "manual":
-		provider, err = acme.NewDNSProviderManual()
-	case "namecheap":
-		provider, err = namecheap.NewDNSProvider()
-	case "route53":
-		provider, err = route53.NewDNSProvider()
-	case "rfc2136":
-		provider, err = rfc2136.NewDNSProvider()
-	case "vultr":
-		provider, err = vultr.NewDNSProvider()
-	case "ovh":
-		provider, err = ovh.NewDNSProvider()
-	case "pdns":
-		provider, err = pdns.NewDNSProvider()
-	default:
-		err = fmt.Errorf("Unrecognised DNSProvider: %s", dnsProvider)
-	}
-	return provider, err
-}
-
 func (a *ACME) buildACMEClient(account *Account) (*acme.Client, error) {
 	log.Debugf("Building ACME client...")
 	caServer := "https://acme-v01.api.letsencrypt.org/directory"
@@ -520,7 +461,7 @@ func (a *ACME) buildACMEClient(account *Account) (*acme.Client, error) {
 		}
 
 		var provider acme.ChallengeProvider
-		provider, err = dnsChallengeProvider(a.DNSProvider)
+		provider, err = dns.NewDNSChallengeProviderByName(a.DNSProvider)
 		if err != nil {
 			return nil, err
 		}
