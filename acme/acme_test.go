@@ -3,11 +3,9 @@ package acme
 import (
 	"encoding/base64"
 	"github.com/xenolf/lego/acme"
-	"github.com/xenolf/lego/providers/dns/route53"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
-	"strings"
 	"sync"
 	"testing"
 )
@@ -260,29 +258,6 @@ bZME3gHPYCk1QFZUptriMCJ5fMjCgxeOTR+FAkstb/lTRuCc4UyILJguIMar
 	}
 	if !reflect.DeepEqual(domainsCertificates.Certs[0].Certificate, newCertificate) {
 		t.Errorf("Expected new certificate %+v \nGot %+v", newCertificate, domainsCertificates.Certs[0].Certificate)
-	}
-}
-
-func TestSelectDNSProvider(t *testing.T) {
-	provider, err := dnsChallengeProvider("route53")
-	if err != nil {
-		t.Errorf("Error in dnsChallengeProvider :%v", err)
-	}
-	if reflect.TypeOf(provider) != reflect.TypeOf(&route53.DNSProvider{}) {
-		t.Errorf("Not loaded correct DNS proviver: %v is not *route53.DNSProvider", reflect.TypeOf(provider))
-	}
-}
-
-func TestUnknownDNSProvider(t *testing.T) {
-	badProvider := "i-dont-exist"
-	provider, err := dnsChallengeProvider(badProvider)
-	if provider != nil {
-		t.Errorf("Have a provider %T when none expected!", provider)
-	}
-	if err == nil {
-		t.Errorf("Missing expected error from dnsChallengeProvider!")
-	} else if !strings.Contains(err.Error(), badProvider) {
-		t.Errorf("Not mentioning badProvider %s in error message!", badProvider)
 	}
 }
 

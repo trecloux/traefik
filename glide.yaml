@@ -63,7 +63,7 @@ import:
 - package: github.com/xenolf/lego
   repo: https://github.com/trecloux/lego.git
   vcs: git
-  version: ddcef463e8a7e4e6249ff5741a95c5b9da7c9d22
+  version: 5a67269b91714e9bd135a922b7d188ffe88eeddf
   subpackages:
   - acme
 - package: golang.org/x/net
