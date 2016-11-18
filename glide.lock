@@ -1,5 +1,5 @@
-hash: d3af98023f97faf07f637e7ffa144620faaed4892656435eccddf7bdd57fd249
-updated: 2016-11-21T09:39:27.091230074+01:00
+hash: 8c3839acd573968f91d4e0237c9d529a3c496cbbf71a9c3042da88aaeca67ff5
+updated: 2016-11-21T09:45:15.37656913+01:00
 imports:
 - name: github.com/abbot/go-http-auth
   version: cb4372376e1e00e9f6ab9ec142e029302c9e7140
@@ -87,6 +87,8 @@ imports:
   - spew
 - name: github.com/daviddengcn/go-colortext
   version: 3b18c8575a432453d41fdafb340099fff5bba2f7
+- name: github.com/decker502/dnspod-go
+  version: f6b1d56f1c048bd94d7e42ac36efb4d57b069b6f
 - name: github.com/dgrijalva/jwt-go
   version: 9ed569b5d1ac936e6494082958d63a6aa4fff99a
 - name: github.com/docker/distribution
@@ -387,9 +389,7 @@ imports:
   subpackages:
   - dnsimple
 - name: github.com/xenolf/lego
-  version: 5a67269b91714e9bd135a922b7d188ffe88eeddf
-  repo: https://github.com/trecloux/lego.git
-  vcs: git
+  version: 0792ce9a9f543f72aa1ba4d67a693d5288ab7395
   subpackages:
   - acme
   - providers/dns
@@ -399,6 +399,7 @@ imports:
   - providers/dns/digitalocean
   - providers/dns/dnsimple
   - providers/dns/dnsmadeeasy
+  - providers/dns/dnspod
   - providers/dns/dyn
   - providers/dns/exoscale
   - providers/dns/gandi
