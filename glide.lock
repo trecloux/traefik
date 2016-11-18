@@ -1,10 +1,10 @@
-hash: 550c4136ffb75a4d4ed132d9c8b39058b453aababcfc3b8393cb14a9d653c00e
-updated: 2016-11-07T16:50:08.215606154+01:00
+hash: f2e9403b9212a106f5475f9cd61b74e63386309c2741984fb3d86a36c3fe1b9a
+updated: 2016-11-18T18:49:54.952115307+01:00
 imports:
 - name: github.com/abbot/go-http-auth
   version: cb4372376e1e00e9f6ab9ec142e029302c9e7140
 - name: github.com/aws/aws-sdk-go
-  version: 45d21707a58c6bfdf7cf12197d054769d88f7d13
+  version: f6fb76affb07a2797d4adde9162d4feb5a436f4a
   subpackages:
   - aws
   - aws/awserr
@@ -36,11 +36,11 @@ imports:
   - service/sts
   - session
 - name: github.com/Azure/azure-sdk-for-go
-  version: e7b4103001569a8e595f7dec977da9f7393d6939
+  version: aead755dc96b6e8b340103c79c89b22e641a57df
   subpackages:
   - arm/dns
 - name: github.com/Azure/go-autorest
-  version: 8a25372bbfec739b8719a9e3987400d15ef9e179
+  version: e0c77ecbe74311e03f2a629834d2110f031f1453
   subpackages:
   - autorest
   - autorest/azure
@@ -79,6 +79,8 @@ imports:
   version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
   subpackages:
   - spew
+- name: github.com/decker502/dnspod-go
+  version: f6b1d56f1c048bd94d7e42ac36efb4d57b069b6f
 - name: github.com/dgrijalva/jwt-go
   version: 9ed569b5d1ac936e6494082958d63a6aa4fff99a
 - name: github.com/docker/distribution
@@ -301,7 +303,7 @@ imports:
   subpackages:
   - libcontainer/user
 - name: github.com/ovh/go-ovh
-  version: d2b2eae2511fa5fcd0bdef9f1790ea3979fa35d4
+  version: d6763cca4824319e17e556858e4517b151de4558
   subpackages:
   - ovh
 - name: github.com/parnurzeal/gorequest
@@ -379,9 +381,7 @@ imports:
   subpackages:
   - dnsimple
 - name: github.com/xenolf/lego
-  version: 5a67269b91714e9bd135a922b7d188ffe88eeddf
-  repo: https://github.com/trecloux/lego.git
-  vcs: git
+  version: 0792ce9a9f543f72aa1ba4d67a693d5288ab7395
   subpackages:
   - acme
   - providers/dns
@@ -391,6 +391,7 @@ imports:
   - providers/dns/digitalocean
   - providers/dns/dnsimple
   - providers/dns/dnsmadeeasy
+  - providers/dns/dnspod
   - providers/dns/dyn
   - providers/dns/exoscale
   - providers/dns/gandi
