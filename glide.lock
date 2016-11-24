@@ -1,5 +1,5 @@
-hash: 8c3839acd573968f91d4e0237c9d529a3c496cbbf71a9c3042da88aaeca67ff5
-updated: 2016-11-21T09:45:15.37656913+01:00
+hash: 62a54552a167518f44165c2116c7424c788ee2cbd788fd07058274ab1eb5bd8c
+updated: 2016-11-24T21:47:54.919991808+01:00
 imports:
 - name: github.com/abbot/go-http-auth
   version: cb4372376e1e00e9f6ab9ec142e029302c9e7140
@@ -10,7 +10,7 @@ imports:
 - name: github.com/ArthurHlt/gominlog
   version: 068c01ce147ad68fca25ef3fa29ae5395ae273ab
 - name: github.com/aws/aws-sdk-go
-  version: 898c81ba64b9a467379d35e3fabad133beae0ee4
+  version: 90dec2183a5f5458ee79cbaf4b8e9ab910bc81a6
   subpackages:
   - aws
   - aws/awserr
@@ -20,14 +20,11 @@ imports:
   - aws/corehandlers
   - aws/credentials
   - aws/credentials/ec2rolecreds
-  - aws/credentials/endpointcreds
-  - aws/credentials/stscreds
   - aws/defaults
   - aws/ec2metadata
   - aws/request
   - aws/session
   - aws/signer/v4
-  - client
   - private/endpoints
   - private/protocol
   - private/protocol/query
@@ -36,11 +33,7 @@ imports:
   - private/protocol/restxml
   - private/protocol/xml/xmlutil
   - private/waiter
-  - request
-  - route53
   - service/route53
-  - service/sts
-  - session
 - name: github.com/Azure/azure-sdk-for-go
   version: 3b12823551999669c9a325a32472508e0af7978e
   subpackages:
@@ -178,7 +171,7 @@ imports:
   - sockets
   - tlsconfig
 - name: github.com/docker/go-units
-  version: f2145db703495b2e525c59662db69a7344b00bb8
+  version: f2d77a61e3c169b43402a0a1e84f06daf29b8190
 - name: github.com/docker/leadership
   version: 0a913e2d71a12fd14a028452435cb71ac8d82cb6
 - name: github.com/docker/libcompose
@@ -221,11 +214,11 @@ imports:
 - name: github.com/gambol99/go-marathon
   version: a558128c87724cd7430060ef5aedf39f83937f55
 - name: github.com/go-check/check
-  version: 4f90aeace3a26ad7021961c297b22c42160c7b25
+  version: 11d3bc7aa68e238947792f30573146a3231fc0f1
 - name: github.com/go-ini/ini
-  version: 6e4869b434bd001f6983749881c7ead3545887d8
+  version: 2ba15ac2dc9cdf88c110ec2dc0ced7fa45f5678c
 - name: github.com/gogo/protobuf
-  version: 99cb9b23110011cc45571c901ecae6f6f5e65cd3
+  version: 43ab7f0ec7b6d072e0368bd537ffefe74ed30198
   subpackages:
   - proto
 - name: github.com/golang/glog
@@ -239,7 +232,7 @@ imports:
   subpackages:
   - query
 - name: github.com/gorilla/context
-  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+  version: aed02d124ae4a0e94fea4541c8effd05bf0c8296
 - name: github.com/hashicorp/consul
   version: d8e2fb7dd594163e25a89bc52c1a4613f5c5bfb8
   subpackages:
@@ -311,7 +304,7 @@ imports:
   subpackages:
   - libcontainer/user
 - name: github.com/ovh/go-ovh
-  version: d6763cca4824319e17e556858e4517b151de4558
+  version: 99a1e00db4397517d87ab82c92b9d8cb60e5940b
   subpackages:
   - ovh
 - name: github.com/parnurzeal/gorequest
@@ -333,7 +326,7 @@ imports:
 - name: github.com/satori/go.uuid
   version: 879c5887cd475cd7864858769793b2ceb0d44feb
 - name: github.com/Sirupsen/logrus
-  version: 3ec0642a7fb6488f65b06f9040adc67e3990296a
+  version: f3cfb454f4c209e6668c95216c4744b8fddb2356
 - name: github.com/streamrail/concurrent-map
   version: 8bf1e9bacbf65b10c81d0f4314cf2b1ebef728b5
 - name: github.com/stretchr/objx
