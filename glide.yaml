@@ -29,6 +29,8 @@ import:
   - types
   - types/events
   - types/filters
+- package: github.com/docker/go-units
+  version: v0.3.1
 - package: github.com/docker/go-connections
   subpackages:
   - sockets
@@ -102,16 +104,3 @@ import:
 - package: github.com/ArthurHlt/go-eureka-client
   subpackages:
   - eureka
-- package: github.com/JamesClonk/vultr
-  version: ^1.10.0
-- package: github.com/aws/aws-sdk-go
-  version: ^1.4.22
-  subpackages:
-  - aws
-  - client
-  - request
-  - session
-  - route53
-- package: github.com/ovh/go-ovh
-- package: github.com/timewasted/linode
-- package: github.com/weppos/dnsimple-go
